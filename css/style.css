@@ -36,6 +36,32 @@ img, video {
   display: block;
 }
 
+/* ===== Header con Logo ===== */
+.site-header {
+  padding: 15px 20px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
 /* ===== Slider de Imágenes ===== */
 .media-gallery {
   position: relative;
@@ -63,9 +89,10 @@ img, video {
 
 .media-slide img {
   width: 100%; /* Controla el ancho primero */
-  height: 340px; /* La altura se ajusta automáticamente */
+  height: 450px; /* La altura se ajusta automáticamente */
   max-height: 500px; /* Límite opcional */
 }
+
 .media-slide video {
   width: 100%;
   height: 100%;
@@ -551,6 +578,115 @@ img, video {
   color: var(--text-light);
 }
 
+/* ===== Formulario de Contacto ===== */
+.contact-section {
+  padding: 30px 20px;
+  background: var(--bg-secondary);
+  margin-top: 20px;
+}
+
+.contact-section h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--bg);
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.submit-btn:hover {
+  background: var(--primary-dark);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  background: var(--text);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  height: 40px;
+  width: auto;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.footer-logo:hover {
+  transform: scale(1.05);
+}
+
+.copyright {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 10px;
+}
+
 /* ===== Botón Flotante ===== */
 .sticky-cta {
   position: fixed;
@@ -613,6 +749,18 @@ img, video {
     padding: 30px 40px;
   }
   
+  .contact-section {
+    padding: 40px;
+  }
+  
+  .contact-form {
+    padding: 30px;
+  }
+  
+  .site-header, .site-footer {
+    padding: 20px 40px;
+  }
+  
   .sticky-cta {
     padding: 15px 40px;
   }
@@ -641,56 +789,4 @@ img, video {
   opacity: 1 !important;
   transform: scale(1.1);
   background: rgba(0, 0, 0, 0.9);
-}
-
-/* ===== Estilos Mejorados para el Upsell ===== */
-.upsell-section {
-  background: #fff8e1;
-  padding: 15px 20px;
-  margin: 10px 20px;
-  border-radius: 12px;
-  border: 1px solid #ffd54f;
-  animation: pulse 2s infinite;
-  text-align: center;
-}
-
-.upsell-section h3 {
-  color: #d32f2f;
-  margin-bottom: 12px;
-  font-size: 16px;
-}
-
-.upsell-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.upsell-content input[type="checkbox"] {
-  transform: scale(1.3);
-  cursor: pointer;
-}
-
-.upsell-content label {
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 15px;
-}
-
-.upsell-content label span {
-  color: #d32f2f;
-  font-weight: bold;
-}
-
-.upsell-note {
-  font-size: 12px;
-  color: #5d4037;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 213, 79, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 213, 79, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 213, 79, 0); }
 }
