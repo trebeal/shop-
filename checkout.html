@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra | TecnoShop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .checkout-container { 
+            max-width: 800px; 
+            margin: 20px auto; 
+            padding: 20px;
+        }
+        .order-summary { 
+            background: var(--bg-secondary); 
+            border-radius: var(--radius); 
+            padding: 20px; 
+            margin-bottom: 20px; 
+        }
+        .product-item { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 15px; 
+            align-items: center;
+        }
+        .product-item img { 
+            border-radius: 8px; 
+            width: 80px; 
+            height: 80px; 
+            object-fit: cover;
+        }
+        .price-total { 
+            text-align: right; 
+            font-size: 18px; 
+            margin-top: 15px; 
+            font-weight: 700;
+        }
+        #paypal-button-container { 
+            margin-top: 20px; 
+        }
+        .bank-details {
+            background: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h1>Finalizar Compra</h1>
+        
+        <!-- Resumen del Pedido -->
+        <div class="order-summary">
+            <h2>Tu Pedido</h2>
+            <div class="product-item">
+                <img src="https://ae-pic-a1.aliexpress-media.com/kf/H8283ef8d5e2e4f0c8a0c3f8a3e1e3a3fz.jpg">
+                <div>
+                    <h3>Soporte Magnético ESSAGER 15W</h3>
+                    <p>1 x $34.99</p>
+                </div>
+            </div>
+            <div class="product-item" id="usb-item" style="display: none;">
+                <img src="https://example.com/usb-cable.jpg">
+                <div>
+                    <h3>Cable USB-C 3A (Oferta)</h3>
+                    <p>1 x $4.99</p>
+                </div>
+            </div>
+            <div class="price-total">
+                <p>Total: <strong id="total-price">$34.99</strong></p>
+            </div>
+        </div>
+
+        <!-- Contenedor de PayPal -->
+        <div id="paypal-button-container"></div>
+
+        <!-- Método alternativo -->
+        <div style="text-align: center; margin-top: 20px;">
+            <p>¿Prefieres otro método? <a href="#" id="show-transfer">Transferencia Bancaria</a></p>
+            <div id="transfer-form" style="display: none; margin-top: 15px;">
+                <div class="bank-details">
+                    <h3>Datos para Transferencia</h3>
+                    <p><strong>Banco:</strong> Mercantil</p>
+                    <p><strong>Cuenta:</strong> 0102-1234-5678-9123</p>
+                    <p><strong>Titular:</strong> TecnoShop LLC</p>
+                    <p><strong>Enviar comprobante a:</strong> pagos@tecnoshop.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDK de PayPal -->
+    <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=USD"></script>
+    <script>
+        // Obtener parámetro del upsell
+        const urlParams = new URLSearchParams(window.location.search);
+        const withUSB = urlParams.get('usb') === 'true';
+        const totalPrice = withUSB ? 39.98 : 34.99;
+        
+        // Mostrar items según upsell
+        if (withUSB) {
+            document.getElementById('usb-item').style.display = 'flex';
+            document.getElementById('total-price').textContent = '$39.98';
+        }
+
+        // Mostrar/ocultar transferencia
+        document.getElementById('show-transfer').addEventListener('click', (e) => {
+            e.preventDefault();
+            const form = document.getElementById('transfer-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Integración PayPal
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: totalPrice.toString(),
+                            currency_code: 'USD',
+                            breakdown: {
+                                item_total: {
+                                    value: totalPrice.toString(),
+                                    currency_code: 'USD'
+                                }
+                            }
+                        },
+                        items: [
+                            {
+                                name: 'Soporte Magnético ESSAGER 15W',
+                                unit_amount: {
+                                    value: '34.99',
+                                    currency_code: 'USD'
+                                },
+                                quantity: '1'
+                            },
+                            ...(withUSB ? [{
+                                name: 'Cable USB-C 3A (Oferta)',
+                                unit_amount: {
+                                    value: '4.99',
+                                    currency_code: 'USD'
+                                },
+                                quantity: '1'
+                            }] : [])
+                        ]
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    window.location.href = "success.html?transaction_id=" + data.orderID;
+                });
+            },
+            onError: function(err) {
+                console.error(err);
+                alert("Error en el pago. Por favor intenta nuevamente.");
+            }
+        }).render('#paypal-button-container');
+    </script>
+</body>
+</html>
